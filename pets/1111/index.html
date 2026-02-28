@@ -98,18 +98,10 @@
       const WHATSAPP = "1234567890";
       return (
         <div className="space-y-3 mb-6 w-full max-w-md px-4">
-          <a
-            href={`tel:${OWNER_PHONE}`}
-            style={{ transform: 'scale(1.6)', transformOrigin: 'center' }}
-            className="w-full bg-black text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition"
-          >
+          <a href={`tel:${OWNER_PHONE}`} className="w-full bg-black text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
             <span>📞 დარეკე მეპატრონეს</span>
           </a>
-          <a
-            href={`https://wa.me/${WHATSAPP}`}
-            style={{ transform: 'scale(1.6)', transformOrigin: 'center' }}
-            className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition"
-          >
+          <a href={`https://wa.me/${WHATSAPP}`} className="w-full bg-green-500 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition">
             <span>💬 WhatsApp</span>
           </a>
         </div>
@@ -236,11 +228,7 @@
             </div>
           )}
           {gameStatus==='idle' && (
-            <button
-              onClick={handleInteraction}
-              style={{ transform: 'scale(1.6)', transformOrigin: 'center' }}
-              className="fixed bottom-6 right-4 z-40 bg-white text-amber-600 font-bold py-3 px-5 rounded-2xl shadow-xl border border-amber-100 flex items-center gap-2 active:scale-95 transition animate-pop"
-            >
+            <button onClick={handleInteraction} className="fixed bottom-6 right-4 z-40 bg-white text-amber-600 font-bold py-3 px-5 rounded-2xl shadow-xl border border-amber-100 flex items-center gap-2 active:scale-95 transition animate-pop">
               <span className="text-sm">Feed & Play?</span>
               <div className="icon-paw-print text-lg"></div>
             </button>
@@ -248,8 +236,8 @@
           {gameStatus==='playing' && (
             <button
               onClick={handleInteraction}
-              style={{ transform: 'scale(1.6)', transformOrigin: 'center' }}
-              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-amber-500 hover:bg-amber-600 text-white w-24 h-24 rounded-full shadow-2xl border-4 border-white transition-all active:scale-90 active:rotate-12 group flex items-center justify-center animate-pop"
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-amber-500 hover:bg-amber-600 text-white rounded-full shadow-2xl border-4 border-white transition-all active:scale-90 active:rotate-12 group flex items-center justify-center animate-pop"
+              style={{ width: '134px', height: '134px' }}  /* 40% bigger */
               aria-label="Feed"
             >
               <div className="icon-bone text-4xl group-active:scale-125 transition-transform"></div>
@@ -300,6 +288,7 @@
 
       return (
         <>
+          {/* Partners buttons ABOVE game button on right */}
           <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-3">
             <button
               onClick={() => handleOpen('feed')}
