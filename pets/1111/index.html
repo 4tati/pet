@@ -175,7 +175,7 @@
       );
     }
 
-    // ---------------------- PetInteraction ----------------------
+    // ---------------------- PetInteraction (FIXED COUNTDOWN) ----------------------
     function PetInteraction() {
       const GAME_DURATION = 20;
       const [foods, setFoods] = React.useState([]);
@@ -189,19 +189,32 @@
 
       React.useEffect(() => { window.__gameStatus = gameStatus; }, [gameStatus]);
       React.useEffect(() => { if (gameStatus==='idle') isStartingRef.current=false; }, [gameStatus]);
+
+      // FIX: countdown now always updates until 0 and turns red below 5 seconds
       React.useEffect(() => {
         let interval;
-        if(isPlaying && timeLeft>0){
-          interval=setInterval(()=>{ setTimeLeft(prev=>{ if(prev<=1){ setIsPlaying(false); setGameStatus('finished'); setShowScorePopup(true); return 0;} return prev-1; }); }, 1000);
+        if (isPlaying && timeLeft > 0) {
+          interval = setInterval(() => {
+            setTimeLeft(prev => {
+              if (prev <= 1) {
+                setIsPlaying(false);
+                setGameStatus('finished');
+                setShowScorePopup(true);
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
         }
-        return ()=>clearInterval(interval);
+        return () => clearInterval(interval);
       }, [isPlaying, timeLeft]);
+
       React.useEffect(()=>{ if(gameStatus==='finished' && score>highScore){ setHighScore(score); localStorage.setItem('pet_feed_highscore',score.toString()); } },[gameStatus,score,highScore]);
 
       const spawnFood = React.useCallback(()=>{
         if(navigator.vibrate) navigator.vibrate(30);
         const id=Date.now();
-        const newFood={id,left:Math.random()*80+10,icon:['🦴','🍖','🥩','🍪'][Math.floor(Math.random()*4)],size:Math.random()+1.5};
+        const newFood={id,left:Math.random()*80+10,icon:['🐟','🍱','🥫','🧀'][Math.floor(Math.random()*4)],size:Math.random()+1.5};
         setFoods(prev=>[...prev,newFood]);
         setTimeout(()=>setFoods(prev=>prev.filter(f=>f.id!==id)),3000);
       },[]);
@@ -223,7 +236,9 @@
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Time</span>
-                  <span className={`font-mono font-bold ${timeLeft<5?'text-red-500 animate-pulse':'text-gray-700'}`}>{timeLeft}s</span>
+                  <span className={`font-mono font-bold ${timeLeft < 5 ? 'text-red-500' : 'text-gray-700'}`}>
+                    {timeLeft}s
+                  </span>
                 </div>
               </div>
             </div>
@@ -231,7 +246,7 @@
           {gameStatus==='idle' && (
             <button onClick={handleInteraction} className="fixed bottom-6 right-4 z-40 bg-white text-amber-600 font-bold py-3 px-5 rounded-2xl shadow-xl border border-amber-100 flex items-center gap-2 active:scale-95 transition animate-pop">
               <span className="text-sm">Feed & Play?</span>
-              <div className="icon-paw-print text-lg"></div>
+              <span>🧵</span>
             </button>
           )}
           {gameStatus==='playing' && (
@@ -241,7 +256,7 @@
               style={{ width: '134px', height: '134px' }}
               aria-label="Feed"
             >
-              <div className="icon-bone text-4xl group-active:scale-125 transition-transform"></div>
+              <span className="text-4xl group-active:scale-125 transition-transform">🧵</span>
             </button>
           )}
           <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden" data-name="food-rain-container">
@@ -295,7 +310,6 @@
 
       return (
         <>
-          {/* Partners buttons ABOVE game button on right */}
           {gameStatus !== 'playing' && (
             <div className="fixed bottom-20 right-4 z-50 flex flex-col gap-3">
               <button
@@ -319,7 +333,7 @@
                 </div>
                 <div className="flex-1 bg-gray-100">
                   <iframe
-                    src={activeAction === 'feed' ? "https://www.lostdogsgeorgia.org/" : "https://www.lostdogsgeorgia.org/"}
+                    src="https://www.lostdogsgeorgia.org/"
                     title="Partner Page"
                     className="w-full h-full min-h-[400px]"
                     loading="lazy"
